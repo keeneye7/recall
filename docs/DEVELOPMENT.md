@@ -11,6 +11,21 @@ mode 3 with a 1 ms margin, and shader variants prepared when the game creates
 its shaders. It preserves the saved game FPS limit. Diagnostic overlay presentation has
 a known focus-return failure and is not a supported player option.
 
+The fork's experimental canvas mouse policy consumes client presses already
+delivered to Wine, together with their subsequent drags and matching releases.
+Passing the same sequence to AppKit can replace the game cursor with the macOS
+arrow while the game remains active. The policy applies only to an active, key,
+settled fullscreen canvas. Its guards are intended to preserve background
+activation, Command-clicks, titlebar controls and windowed handling. It requires a
+rebuilt Wine runtime; rebuilding the launcher with an existing runtime archive
+does not include it.
+
+The measured cursor improvement used a temporary Diablo III native-canvas
+profile. That profile is excluded because rollback testing reported worse image
+quality and purple geometry flicker with it. The default Diablo execution path
+is unchanged. Overwatch's input modes, real focus/fullscreen transitions and
+long sessions still need live validation before proposing this policy upstream.
+
 Layout:
 
 - `app/` — the SwiftUI Mac app: setup wizard, launch, settings, support and
